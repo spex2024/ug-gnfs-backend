@@ -17,6 +17,12 @@ app.use(cors(
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   }
 ));
+
+
+app.get('/', (req, res) => {
+  res.send('API is running...');
+}
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
