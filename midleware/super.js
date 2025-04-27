@@ -14,13 +14,13 @@ export const protectAdmin = (req, res, next) => {
         // Attach user info to request object
         req.user = decoded;
 
-        // Check if the route is for getting the admin profile
-        if (req.method === 'GET' && req.originalUrl.includes('/get/')) {
-            // Allow the admin to access their own profile
-            if (req.user.role === 'admin' && req.params.id === req.user.id) {
-                return next(); // Proceed if the user is an admin accessing their own profile
-            }
-        }
+        // // Check if the route is for getting the admin profile
+        // if (req.method === 'GET' && req.originalUrl.includes('/get/')) {
+        //     // Allow the admin to access their own profile
+        //     if (req.user.role === 'admin' && req.params.id === req.user.id) {
+        //         return next(); // Proceed if the user is an admin accessing their own profile
+        //     }
+        // }
 
 
         next(); // Proceed to the next middleware or route handler
