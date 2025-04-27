@@ -19,12 +19,15 @@ app.use(cors(
 ));
 
 
-app.get('/',(req, res) => {
-  res.send('API is running...');
+app.get('/',async(req, res) => {
+      
+   res.send('API is running...');
   connectDB()
     .then(() => console.log('MongoDB connected'))
     .catch((err) => console.error('MongoDB connection error:', err));
+    await createDefaultAdmin();
 }
+
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
