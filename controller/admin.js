@@ -74,7 +74,7 @@ export const loginAdmin = async (req, res) => {
       httpOnly: true, // Ensures the cookie is accessible only by the server (not JavaScript)
       maxAge: COOKIE_MAX_AGE, // 1 hour max age
       secure: process.env.NODE_ENV === 'production', // Use secure cookies in production (SSL)
-      sameSite: 'strict', // SameSite flag, adjust based on your needs
+      sameSite: 'lax', // SameSite flag, adjust based on your needs
       domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : 'localhost', // Shared across subdomains under Vercel
     });
     // Log login action
