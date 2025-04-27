@@ -33,7 +33,7 @@ const router = Router();
 // ===== Admin Routes =====
 router.post('/login', loginAdmin);
 router.post('/logout', protectAdmin, logoutAdmin);
-router.post('/add', protectAdmin, createAdmin);
+router.post('/add',  createAdmin);
 router.get('/get/:id', protectAdmin, getAdminProfile);
 router.get('/admins', protectAdmin, getAllAdmins);
 router.get('/logs', protectAdmin, logs);
