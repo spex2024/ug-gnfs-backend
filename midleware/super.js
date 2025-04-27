@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 // Middleware to protect routes and check for super admin or self for the admin profile route
 export const protectAdmin = (req, res, next) => {
-    const token = req.cookies.authToken || req.headers.authorization?.split(' ')[1]; // Get token from cookie or Authorization header
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1]; // Get token from cookie or Authorization header
     if (!token) {
         return res.status(401).json({ message: 'No token provided, authorization denied' });
     }
