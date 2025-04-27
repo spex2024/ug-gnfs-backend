@@ -19,8 +19,11 @@ app.use(cors(
 ));
 
 
-app.get('/', (req, res) => {
+app.get('/',(req, res) => {
   res.send('API is running...');
+  connectDB()
+    .then(() => console.log('MongoDB connected'))
+    .catch((err) => console.error('MongoDB connection error:', err));
 }
 );
 app.use(express.json());
@@ -51,7 +54,5 @@ app.use('/api/admin' , adminRoutes)
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  connectDB()
-    .then(() => console.log('MongoDB connected'))
-    .catch((err) => console.error('MongoDB connection error:', err));
+  
 });
