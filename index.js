@@ -14,7 +14,7 @@ dotenv.config();
 app.use(cors(
   {
     origin: ['http://localhost:3000','https://dashboard-green-nu.vercel.app'], // Replace with your frontend URL
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    credentials: true, 
   }
 ));
 
@@ -45,13 +45,13 @@ app.use('/api/admin' , adminRoutes)
 
 
 
-connectDB()
-.then(() => console.log('MongoDB connected'))
-.catch((err) => console.error('MongoDB connection error:', err));
+
 
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
- 
+  connectDB()
+    .then(() => console.log('MongoDB connected'))
+    .catch((err) => console.error('MongoDB connection error:', err));
 });
