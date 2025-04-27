@@ -70,7 +70,7 @@ export const loginAdmin = async (req, res) => {
     );
 
     // Set cookie
-    res.cookie('token', token, {
+    res.cookie('authToken', token, {
       httpOnly: true, // Ensures the cookie is accessible only by the server (not JavaScript)
       maxAge: COOKIE_MAX_AGE, // 1 hour max age
       secure: process.env.NODE_ENV === 'production', // Use secure cookies in production (SSL)
