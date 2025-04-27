@@ -70,13 +70,14 @@ export const loginAdmin = async (req, res) => {
     );
 
     // Set cookie
-    res.cookie('token', token, {
-      httpOnly: true, // Ensures the cookie is accessible only by the server (not JavaScript)
-      maxAge: COOKIE_MAX_AGE, // 1 hour max age
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production (SSL)
-      sameSite: 'strict', // SameSite flag, adjust based on your needs
-      domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : 'localhost', // Shared across subdomains under Vercel
+    res.cookie('authToken', token, {
+      httpOnly: true,
+      maxAge: COOKIE_MAX_AGE,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined,
     });
+    
     // Log login action
     await logAction({ adminId: admin._id,  action: 'login', req });
 
