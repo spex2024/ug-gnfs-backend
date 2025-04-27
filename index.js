@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import employeeRoutes from './route/employee.js'
 import cookieParser from 'cookie-parser';
 import adminRoutes from './route/admin.js'
-import { createDefaultAdmin } from '../schema/admin.js';
+
 
 const app = express();
 dotenv.config();
@@ -19,15 +19,9 @@ app.use(cors(
 ));
 
 
-app.get('/',async(req, res) => {
-      
-   res.send('API is running...');
-  connectDB()
-    .then(() => console.log('MongoDB connected'))
-    .catch((err) => console.error('MongoDB connection error:', err));
-    
+app.get('/', (req, res) => {
+  res.send('API is running...');
 }
-
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -57,5 +51,7 @@ app.use('/api/admin' , adminRoutes)
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  
+  connectDB()
+    .then(() => console.log('MongoDB connected'))
+    .catch((err) => console.error('MongoDB connection error:', err));
 });
