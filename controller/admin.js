@@ -11,38 +11,64 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 const COOKIE_MAX_AGE = 24 * 60 * 60 * 1000; // 1 day
 
 // Helper to log actions
-const logAction = async ({ adminId,  action, req }) => {
+import geoip from 'geoip-lite';
+import axios from 'axios';
+
+const IPINFO_TOKEN = process.env.IPINFO_TOKEN; // Save your ipinfo token in .env
+
+// Helper to fetch ISP (service provider) from IP address
+async function getServiceProvider(ip) {
+  try {
+    const { data } = await axios.get(`https://ipinfo.io/${ip}/json?token=${IPINFO_TOKEN}`);
+    return data.org || 'Unknown ISP';
+  } catch (error) {
+    console.error('Error fetching service provider:', error.message);
+    return 'Unknown ISP';
+  }
+}
+
+export const logAction = async ({ adminId, action, req }) => {
   try {
     let ip = req.headers['x-forwarded-for']?.split(',')[0] || req.connection.remoteAddress || '127.0.0.1';
 
-    // Handle localhost IPs
+    // Handle localhost during development
     if (ip === '::1' || ip === '127.0.0.1') {
-      ip = '8.8.8.8'; // Use a public IP for testing (Google Public DNS)
+      ip = '8.8.8.8'; // Use Google DNS IP to test
     }
 
-    const location = geoip.lookup(ip) || {}; // fallback to empty object if null
- // Extract operating system using a simple regex
- const userAgent = req.headers['user-agent'] || 'Unknown';
- const osMatch = userAgent.match(/\(([^)]+)\)/);
- let operatingSystem = 'Unknown';
+    const locationData = geoip.lookup(ip) || {};
 
- if (osMatch && osMatch[1]) {
-   operatingSystem = osMatch[1].split(';')[0]; // Clean up the OS string
- }
+    let location = {
+      city: locationData.city || 'Unknown',
+      region: locationData.region || 'Unknown',
+      country: locationData.country || 'Unknown',
+      ll: locationData.ll || [], // [latitude, longitude]
+    };
+
+    const bname = await getServiceProvider(ip); // Fetch the ISP (example: MTN Ghana, Telecel Ghana)
+
+    const userAgent = req.headers['user-agent'] || 'Unknown';
+    const osMatch = userAgent.match(/\(([^)]+)\)/);
+    let operatingSystem = 'Unknown';
+
+    if (osMatch && osMatch[1]) {
+      operatingSystem = osMatch[1].split(';')[0];
+    }
+
     await LoginLog.create({
       adminId,
       action,
       ip,
       location,
-      userAgent: operatingSystem, // Save only the OS
-      timestamp: new Date(), // just to be sure, though mongoose default handles it
+      bname,
+      userAgent: operatingSystem,
+      timestamp: new Date(),
     });
+
   } catch (error) {
     console.error('Error logging action:', error.message);
-    // You might want to log this error somewhere instead of crashing the app
   }
 };
-
 
 // Controllers
 
