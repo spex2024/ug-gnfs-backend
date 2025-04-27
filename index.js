@@ -13,7 +13,7 @@ dotenv.config();
 
 app.use(cors(
   {
-    origin: ['http://localhost:3000','https://dashboard-green-nu.vercel.app'], // Replace with your frontend URL
+    origin: ['http://localhost:3000','https://dashboard-green-nu.vercel.app','https://ug-gnfs-form.vercel.app'], // Replace with your frontend URL
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   }
 ));
