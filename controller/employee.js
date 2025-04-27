@@ -128,13 +128,7 @@ export const getEmployeeById = async (req, res) => {
       return res.status(404).json({ message: 'Officer not found' });
     }
 
-    // Log the action
-    await logAction({
-      adminId: req.user.id,
-      action: `viewed - ${employee.firstName} ${employee.lastName}`,
-      req,
-    });
-
+    
     res.status(200).json(employee);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
