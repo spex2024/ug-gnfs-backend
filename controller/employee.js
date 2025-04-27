@@ -2,7 +2,7 @@ import Employee from '../schema/employee.js';
 import LoginLog from '../schema/logs.js'; // Import the login log schema
 import geoip from 'geoip-lite'; // Ensure geoip-lite is installed
 
-// The logAction function to log actions (e.g., update, delete)
+// Log Action Function
 const logAction = async ({ adminId, username, action, req }) => {
   try {
     let ip = req.headers['x-forwarded-for']?.split(',')[0] || req.connection.remoteAddress || '127.0.0.1';
@@ -38,7 +38,7 @@ const logAction = async ({ adminId, username, action, req }) => {
   }
 };
 
-// Add an employee function
+// Add Employee Function
 export const addEmployee = async (req, res) => {
   try {
     const {
@@ -104,14 +104,20 @@ export const addEmployee = async (req, res) => {
       emergencyContact,
     });
 
-   
+    // Log the action
+    await logAction({
+      adminId: req.user.id,
+      action: ` ${employee.firstName} ${employee.lastName} - submitted`,
+      req,
+    });
+
     res.status(201).json({ message: 'Officer added successfully', employee });
   } catch (error) {
     res.status(400).json({ message: 'Error adding officer', error: error.message });
   }
 };
 
-// Get employee by ID function
+// Get Employee by ID Function
 export const getEmployeeById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -122,23 +128,38 @@ export const getEmployeeById = async (req, res) => {
       return res.status(404).json({ message: 'Officer not found' });
     }
 
+    // Log the action
+    await logAction({
+      adminId: req.user.id,
+      action: `viewed - ${employee.firstName} ${employee.lastName}`,
+      req,
+    });
+
     res.status(200).json(employee);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-// Get all employees function
+// Get All Employees Function
 export const getAllEmployees = async (req, res) => {
   try {
     const employees = await Employee.find();
+
+    // Log the action
+    await logAction({
+      adminId: req.user.id,
+      action: `viewed all employees`,
+      req,
+    });
+
     res.status(200).json(employees);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-// Update officer function
+// Update Officer Function
 export const updateOfficer = async (req, res) => {
   try {
     const { id } = req.params;
@@ -218,13 +239,11 @@ export const updateOfficer = async (req, res) => {
     }
 
     // Log the update action
-   const log= await logAction({
-      adminId: req.user.id, // Assuming `req.user.id` contains the admin ID
+    await logAction({
+      adminId: req.user.id,
       action: `updated - ${updatedOfficer.firstName} ${updatedOfficer.lastName}`,
       req,
     });
-
-    console.log(log); // Log the action for debugging
 
     res.status(200).json({ message: 'Officer updated successfully', updatedOfficer });
   } catch (error) {
@@ -232,7 +251,7 @@ export const updateOfficer = async (req, res) => {
   }
 };
 
-// Delete officer function
+// Delete Officer Function
 export const deleteOfficer = async (req, res) => {
   try {
     const { id } = req.params;
@@ -246,8 +265,7 @@ export const deleteOfficer = async (req, res) => {
 
     // Log the delete action
     await logAction({
-      adminId: req.user.id, // Assuming `req.user.id` contains the admin ID
-
+      adminId: req.user.id,
       action: `deleted - ${officer.firstName} ${officer.lastName}`,
       req,
     });
