@@ -127,7 +127,6 @@ export const getEmployeeById = async (req, res) => {
     if (!employee) {
       return res.status(404).json({ message: 'Officer not found' });
     }
-
     
     res.status(200).json(employee);
   } catch (error) {
