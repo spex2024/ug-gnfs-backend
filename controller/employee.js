@@ -138,14 +138,6 @@ export const getEmployeeById = async (req, res) => {
 export const getAllEmployees = async (req, res) => {
   try {
     const employees = await Employee.find();
-
-    // Log the action
-    await logAction({
-      adminId: req.user.id,
-      action: `viewed all employees`,
-      req,
-    });
-
     res.status(200).json(employees);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
