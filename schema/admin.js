@@ -51,25 +51,4 @@ adminSchema.pre('save', async function (next) {
 // Admin Model
 const Admin = mongoose.model('Admin', adminSchema);
 
-// Create default admin
-export const createDefaultAdmin = async () => {
-    const defaultAdmin = await Admin.findOne({ username: 'super_admin' });
-    if (!defaultAdmin) {
-        const admin = new Admin({
-            fullName: 'Enoch Enu ',
-            department: 'IT',
-            rank: 'LFM',
-            username: 'super_admin',
-            password: 'default_admin',
-            email: 'ekowspex@gmail.com',
-            phone: '0541234567',
-            role: 'superadmin', 
-        });
-        await admin.save();
-        console.log('Default admin created');
-    } else {
-        console.log('Default admin already exists');
-    }
-};
-
 export default Admin;
