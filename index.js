@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import employeeRoutes from './route/employee.js'
 import cookieParser from 'cookie-parser';
 import adminRoutes from './route/admin.js'
-
+import { createDefaultAdmin } from '../schema/admin.js';
 
 const app = express();
 dotenv.config();

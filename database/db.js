@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { createDefaultAdmin } from '../schema/admin.js';
 import Admin from '../schema/admin.js';
 
+dotenv.config();
 const connectDB = async (retries = 5, delay = 5000) => {
     try {
         const conn = await mongoose.connect(process.env.MONGO_URI, {
