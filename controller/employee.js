@@ -101,15 +101,23 @@ export const addEmployee = async (req, res) => {
       emergencyContact,
     });
 
-    // Log the action
-    await logAction({
-      adminId: req.user.id,
-      action: ` ${employee.firstName} ${employee.lastName} - submitted`,
-      req,
-    });
-
+    // ✅ Send response first
     res.status(201).json({ message: 'Officer added successfully', employee });
+
+    // 🔥 Then try logging, but don't block
+    try {
+      await logAction({
+        adminId: req.user.id,
+        action: `${employee.firstName} ${employee.lastName} - submitted`,
+        req,
+      });
+    } catch (logError) {
+      console.error('Failed to log action:', logError.message);
+      // No need to crash the main flow if logging fails
+    }
+
   } catch (error) {
+    console.error(error);
     res.status(400).json({ message: 'Error adding officer', error: error.message });
   }
 };
