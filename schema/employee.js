@@ -47,14 +47,6 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  bankName: {
-    type: String,
-    required: true,
-  },
-  accountNumber: {
-    type: String,
-    required: true,
-  },
   gender: {
     type: String,
     required: true,
@@ -63,7 +55,10 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required:true
   },
-
+  department:{
+    type: String,
+    required:true
+  },
   nationalId:{
     type:String,
     required:true
