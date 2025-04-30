@@ -60,6 +60,7 @@ export const addEmployee = async (req, res) => {
       email,
       address,
       phoneNumber,
+      emergencyContactName,
       emergencyContact,
     } = req.body;
 
@@ -96,6 +97,7 @@ export const addEmployee = async (req, res) => {
       nationalId,
       email,
       maritalStatus,
+      emergencyContactName,
       address,
       phoneNumber,
       emergencyContact,
