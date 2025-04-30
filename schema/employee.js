@@ -79,6 +79,10 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  emergencyContactName: {
+    type: String,
+    required: true,
+  },
   emergencyContact: {
     type: String,
     required: true,

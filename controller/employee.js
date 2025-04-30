@@ -108,7 +108,7 @@ export const addEmployee = async (req, res) => {
     try {
       await logAction({
         adminId: req.user.id,
-        action: `${employee.firstName} ${employee.lastName} - submitted`,
+        action: `${employee.firstName} ${employee.lastName} - added`,
         req,
       });
     } catch (logError) {
@@ -172,6 +172,7 @@ export const updateOfficer = async (req, res) => {
       address,
       phoneNumber,
       emergencyContact,
+      emergencyContactName,
       previousRanks = [],
       previousDepartments = [],
     } = req.body;
@@ -183,7 +184,6 @@ export const updateOfficer = async (req, res) => {
         { phoneNumber },
         { serviceNumber },
         { staffId },
-        { accountNumber },
         { email },
       ],
     });
@@ -214,6 +214,7 @@ export const updateOfficer = async (req, res) => {
         maritalStatus,
         address,
         phoneNumber,
+        emergencyContactName,
         emergencyContact,
         previousRanks,
         previousDepartments,
